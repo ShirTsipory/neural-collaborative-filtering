@@ -70,7 +70,19 @@ class Engine(object):
                 negative_users = negative_users.cpu()
                 negative_items = negative_items.cpu()
                 negative_scores = negative_scores.cpu()
-            self._metron.subjects = [test_users.data.view(-1).tolist(),
+            self._metron1.subjects = [test_users.data.view(-1).tolist(),
+                                 test_items.data.view(-1).tolist(),
+                                 test_scores.data.view(-1).tolist(),
+                                 negative_users.data.view(-1).tolist(),
+                                 negative_items.data.view(-1).tolist(),
+                                 negative_scores.data.view(-1).tolist()]
+            self._metron2.subjects = [test_users.data.view(-1).tolist(),
+                                 test_items.data.view(-1).tolist(),
+                                 test_scores.data.view(-1).tolist(),
+                                 negative_users.data.view(-1).tolist(),
+                                 negative_items.data.view(-1).tolist(),
+                                 negative_scores.data.view(-1).tolist()]
+            self._metron3.subjects = [test_users.data.view(-1).tolist(),
                                  test_items.data.view(-1).tolist(),
                                  test_scores.data.view(-1).tolist(),
                                  negative_users.data.view(-1).tolist(),

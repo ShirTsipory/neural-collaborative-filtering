@@ -55,17 +55,19 @@ class MetronAtK(object):
         rec_rank = 0
         full, top_k = self._subjects, self._top_k
         top_k = full[full['rank'] <= top_k]
-        for item in top_k:
-            cur_rec_rank = 1 / (np.where(top_k['test_item'] == item) + 1)
-            rec_rank += cur_rec_rank
+        test_in_top_k = top_k[top_k['test_item'] == top_k['item']]
+        for rate in test_in_top_k['rank']:
+            rec_rank += (1 / rate)
+        print(full['user'].nunique())
         return rec_rank / full['user'].nunique()
 
     def cal_mpr(self):
         # MPR
         rec_percent = 0
         full = self._subjects
-        for item in full:
-            rec_percent += (float(np.where(full['test_item'] == item)[0][0]) / len(full['test_item']))
+        test = full[full['test_item'] == full['item']]
+        for rate in test['rank']:
+            rec_percent += (rate / len(full['test_item']))
         return 1 - (rec_percent / full['user'].nunique())
 
     def cal_ndcg(self):
