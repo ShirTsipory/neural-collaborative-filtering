@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
+import os
 from gmf import GMFEngine
 from mlp import MLPEngine
 from neumf import NeuMFEngine
 from data import SampleGenerator
+
+os.environ['CUDA_VISIBLE_DEVICES'] = "1"
 
 gmf_config = {'alias': 'gmf_factor8neg4-implict',
               'num_epoch': 50,
