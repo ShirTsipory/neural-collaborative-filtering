@@ -55,7 +55,7 @@ neumf_config = {'alias': 'pretrain_neumf_factor8neg4',
                 'num_negative': 4,
                 'layers': [16,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
-                'use_cuda': False,
+                'use_cuda': True,
                 'device_id': 7,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4_Epoch50_HR0.6391_NDCG0.2852.model'),
