@@ -14,7 +14,9 @@ class Engine(object):
 
     def __init__(self, config):
         self.config = config  # model configuration
-        self._metron = MetronAtK(top_k=10)
+        self._metron1 = MetronAtK(top_k=5)
+        self._metron2 = MetronAtK(top_k=10)
+        self._metron3 = MetronAtK(top_k=20)
         self._writer = SummaryWriter(log_dir='runs/{}'.format(config['alias']))  # tensorboard writer
         self._writer.add_text('config', str(config), 0)
         self.opt = use_optimizer(self.model, config)
@@ -74,13 +76,24 @@ class Engine(object):
                                  negative_users.data.view(-1).tolist(),
                                  negative_items.data.view(-1).tolist(),
                                  negative_scores.data.view(-1).tolist()]
-        hit_ratio, ndcg = self._metron.cal_hit_ratio(), self._metron.cal_ndcg()
-        self._writer.add_scalar('performance/HR', hit_ratio, epoch_id)
-        self._writer.add_scalar('performance/NDCG', ndcg, epoch_id)
-        print('[Evluating Epoch {}] HR = {:.4f}, NDCG = {:.4f}'.format(epoch_id, hit_ratio, ndcg))
-        return hit_ratio, ndcg
+        hit_ratio1, mrr1, ndcg1 = self._metron1.cal_hit_ratio(), self._metron1.cal_mrr(), self._metron1.cal_ndcg()
+        hit_ratio2, mrr2, ndcg2 = self._metron2.cal_hit_ratio(), self._metron2.cal_mrr(), self._metron2.cal_ndcg()
+        hit_ratio3, mrr3, ndcg3 = self._metron3.cal_hit_ratio(), self._metron3.cal_mrr(), self._metron3.cal_ndcg()
+        mpr = self._metron1.cal_mpr()
+        self._writer.add_scalar('performance/HR@5', hit_ratio1, epoch_id)
+        self._writer.add_scalar('performance/HR@10', hit_ratio2, epoch_id)
+        self._writer.add_scalar('performance/HR@20', hit_ratio3, epoch_id)
+        self._writer.add_scalar('performance/MRR@5', mrr1, epoch_id)
+        self._writer.add_scalar('performance/MRR@10', mrr2, epoch_id)
+        self._writer.add_scalar('performance/MRR@20', mrr3, epoch_id)
+        self._writer.add_scalar('performance/MPR', mpr, epoch_id)
+        self._writer.add_scalar('performance/NDCG@5', ndcg1, epoch_id)
+        self._writer.add_scalar('performance/NDCG@10', ndcg2, epoch_id)
+        self._writer.add_scalar('performance/NDCG@20', ndcg3, epoch_id)
+        print('[Evluating Epoch {}] HR = {:.4f}, MRR = {:.4f}, MPR = {:.4f}, NDCG = {:.4f}'.format(epoch_id, hit_ratio2, mrr2, mpr, ndcg2))
+        return hit_ratio1,hit_ratio2,hit_ratio3, mrr1, mrr2, mrr3, mpr, ndcg1, ndcg2, ndcg3
 
-    def save(self, alias, epoch_id, hit_ratio, ndcg):
+    def save(self, alias, epoch_id, hit_ratio1,hit_ratio2,hit_ratio3, mrr1, mrr2, mrr3, mpr, ndcg1, ndcg2, ndcg3):
         assert hasattr(self, 'model'), 'Please specify the exact model !'
-        model_dir = self.config['model_dir'].format(alias, epoch_id, hit_ratio, ndcg)
+        model_dir = self.config['model_dir'].format(alias, epoch_id, hit_ratio1,hit_ratio2,hit_ratio3, mrr1, mrr2, mrr3, mpr, ndcg1, ndcg2, ndcg3)
         save_checkpoint(self.model, model_dir)
