@@ -56,7 +56,7 @@ neumf_config = {'alias': 'pretrain_neumf_factor8neg4',
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
-                'layers': [16,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
+                'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
                 'device_id': 0,
