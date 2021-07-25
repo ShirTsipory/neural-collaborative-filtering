@@ -58,7 +58,6 @@ class MetronAtK(object):
         test_in_top_k = top_k[top_k['test_item'] == top_k['item']]
         for rate in test_in_top_k['rank']:
             rec_rank += (1 / rate)
-        print(full['user'].nunique())
         return rec_rank / full['user'].nunique()
 
     def cal_mpr(self):
@@ -67,7 +66,7 @@ class MetronAtK(object):
         full = self._subjects
         test = full[full['test_item'] == full['item']]
         for rate in test['rank']:
-            rec_percent += (rate / len(full['test_item']))
+            rec_percent += (rate / len(test['test_item']))
         return 1 - (rec_percent / full['user'].nunique())
 
     def cal_ndcg(self):
