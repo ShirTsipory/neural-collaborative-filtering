@@ -66,7 +66,7 @@ class MetronAtK(object):
         full = self._subjects
         test = full[full['test_item'] == full['item']]
         for rate in test['rank']:
-            rec_percent += (rate / len(test['test_item']))
+            rec_percent += (rate / test['rank'].max())
         return 1 - (rec_percent / full['user'].nunique())
 
     def cal_ndcg(self):
