@@ -63,7 +63,7 @@ neumf_config = {'alias': 'pretrain_neumf_factor8neg4_movielens',
                 'device_id': 0,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_factor8neg4_movielens_Epoch26_HR0.4158_NDCG0.5995.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('movielens_mlp_factor8neg4_pretrain_movielens_Epoch41_HR0.4477_NDCG0.6280.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('movielens_mlp_factor8neg4_pretrain_movielens_Epoch20_HR0.4425_NDCG0.6242.model'),
                 'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
