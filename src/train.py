@@ -63,7 +63,7 @@ neumf_config = {'alias': 'pretrain_neumf_factor8neg4_movielens',
                 'device_id': 0,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_factor8neg4_movielens_Epoch26_HR0.4158_NDCG0.5995.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('movielens_mlp_factor8neg4_pretrain_movielens_Epoch41_HR0.4477_NDCG0.6280.model'),
                 'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
@@ -90,10 +90,10 @@ evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
 # config = gmf_config
 # engine = GMFEngine(config)
-config = mlp_config
-engine = MLPEngine(config)
-# config = neumf_config
-# engine = NeuMFEngine(config)
+# config = mlp_config
+# engine = MLPEngine(config)
+config = neumf_config
+engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)
