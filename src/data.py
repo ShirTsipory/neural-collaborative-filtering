@@ -3,6 +3,7 @@ import random
 import pandas as pd
 from copy import deepcopy
 from torch.utils.data import DataLoader, Dataset
+import numpy as np
 
 random.seed(0)
 
@@ -75,6 +76,9 @@ class SampleGenerator(object):
             columns={'itemId': 'interacted_items'})
         interact_status['negative_items'] = interact_status['interacted_items'].apply(lambda x: self.item_pool - x)
         interact_status['negative_samples'] = interact_status['negative_items'].apply(lambda x: random.sample(x, 99))
+        all_items = list(range(ratings['itemId'].min(), ratings['itemId'].max() + 1))
+        for line, value in enumerate(interact_status['negative_samples']):
+            interact_status.at[line, 'negative_samples'] = all_items
         return interact_status[['userId', 'negative_items', 'negative_samples']]
 
     def instance_a_train_loader(self, num_negatives, batch_size):
