@@ -4,8 +4,82 @@ import os
 from random import randrange
 import datetime
 import time
+import pandas as pd
+import numpy as np
 
 
+def create_movielens_corpus(min_usr_len, max_usr_len, fin_usr_len, min_items_cnt, max_items_cnt):  # MovieLens: https://grouplens.org/datasets/movielens/
+    file_out = './data/movielens_corpus.csv'  # The file of the output, the ready corpus
+    data_dir = './data/movielens'  # The directory of the files.
+    for file in sorted(os.listdir(data_dir)):
+        print(file)
+        os.path.join(data_dir, file)
+        raw_data = pd.read_csv(os.path.join(data_dir, file), sep='::',
+                                   names=['user', 'item', 'rating', 'timestamp'],
+                                   dtype={'user': int, 'item': int, 'rating': float, 'timestamp': float},
+                                   engine='python')
+
+        sample_row = raw_data.iloc[0, :]
+        if pd.isna(sample_row.rating):
+            raw_data.rating = np.ones(len(raw_data))
+        if pd.isna(sample_row.timestamp):
+            raw_data.timestamp = np.ones(len(raw_data))
+
+        # user item id map
+        raw_num_users = len(pd.unique(raw_data.user))
+        raw_num_items = len(pd.unique(raw_data.item))
+
+        print('# raw users: %d' % (raw_num_users))
+        print('# raw items: %d' % (raw_num_items))
+
+        # Filter positive threshold
+        raw_data = raw_data[raw_data['rating'] > 0.0]
+
+        # Filter users
+        num_items_by_user = raw_data.groupby('user', as_index=False).size()
+        num_items_by_user = num_items_by_user.set_index('user')
+        user_filter_idx = raw_data['user'].isin(
+            num_items_by_user.index[(num_items_by_user['size'] > min_usr_len)
+                                    & (num_items_by_user['size'] < max_usr_len)])
+        raw_data = raw_data[user_filter_idx]
+
+        # Filter items
+        num_users_by_item = raw_data.groupby('item', as_index=False).size()
+        num_users_by_item = num_users_by_item.set_index('item')
+        item_filter_idx = raw_data['item'].isin(
+            num_users_by_item.index[(num_users_by_item['size'] > min_items_cnt)
+                                    & (num_users_by_item['size'] < max_items_cnt)])
+        raw_data = raw_data[item_filter_idx]
+        num_users_by_item = raw_data.groupby('item', as_index=False).size()
+        num_users_by_item = num_users_by_item.set_index('item')
+
+        # Filter users
+        num_items_by_user = raw_data.groupby('user', as_index=False).size()
+        num_items_by_user = num_items_by_user.set_index('user')
+        user_filter_idx = raw_data['user'].isin(
+            num_items_by_user.index[(num_items_by_user['size'] >= fin_usr_len)
+                                    & (num_items_by_user['size'] <= max_usr_len)])
+        raw_data = raw_data[user_filter_idx]
+        num_items_by_user = raw_data.groupby('user', as_index=False).size()
+        num_items_by_user = num_items_by_user.set_index('user')
+        print(raw_data.shape[0])
+
+        num_users = len(pd.unique(raw_data.user))
+        num_items = len(pd.unique(raw_data.item))
+        print('# user after filter (min %d user len): %d' % (min_usr_len, num_users))
+        print('# items after filter (min %d items cnt): %d' % (min_items_cnt, num_items))
+
+        with open(file_out, 'w', newline='') as w_file:
+            writer = csv.writer(w_file, delimiter=',', quotechar='"', escapechar='\n', quoting=csv.QUOTE_NONE)
+            for idx, line in raw_data.iterrows():
+                user = line['user']
+                item = line['item']
+                rating = line['rating']
+                date = line['timestamp']
+                writer.writerow([user, item, rating, date])
+
+
+"""
 def create_movielens_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # MovieLens: https://grouplens.org/datasets/movielens/
     file_out = './data/movielens_corpus.csv'  # The file of the output, the ready corpus
     data_dir = './data/movielens'  # The directory of the files.
@@ -54,7 +128,7 @@ def create_movielens_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_c
                     rating = line[2]
                     date = line[3][:-1]
                     writer.writerow([user, cus_id, rating, date])
-
+"""
 
 def create_netflix_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/netflix-inc/netflix-prize-data
     file_out = './data/netflix_corpus.csv'  # The file of the output, the ready corpus
@@ -336,7 +410,7 @@ def create_yahoo_all_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_c
 
 
 def main():
-    # create_movielens_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 10, max_items_cnt = 10000)
+    create_movielens_corpus(min_usr_len = 1, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
     #create_netflix_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 100, max_items_cnt = 130000)
     #create_moviesdat_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 100, max_items_cnt = 100000)
     #create_yahoo_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 10, max_items_cnt = 100000)
@@ -345,7 +419,7 @@ def main():
     #create_booksrec_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 5, max_items_cnt = 10000)
     #create_animerec_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 10, max_items_cnt = 100000)
     #create_animerec20_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 15, max_items_cnt = 100000)
-    create_amazonbeauty_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 5, max_items_cnt = 50000)
+    #create_amazonbeauty_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 5, max_items_cnt = 50000)
 
 
 if __name__ == '__main__':

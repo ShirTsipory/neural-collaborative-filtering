@@ -21,8 +21,8 @@ gmf_config = {'alias': 'gmf_factor8neg4_movielens',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 6000,
-              'num_items': 3260,
+              'num_users': 5999,
+              'num_items': 3199,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
@@ -88,12 +88,12 @@ print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating
 sample_generator = SampleGenerator(ratings=ml1m_rating)
 evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
-# config = gmf_config
-# engine = GMFEngine(config)
+config = gmf_config
+engine = GMFEngine(config)
 # config = mlp_config
 # engine = MLPEngine(config)
-config = neumf_config
-engine = NeuMFEngine(config)
+# config = neumf_config
+# engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)

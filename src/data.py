@@ -78,6 +78,9 @@ class SampleGenerator(object):
         interact_status['negative_samples'] = interact_status['negative_items'].apply(lambda x: random.sample(x, 99))
         all_items = list(range(ratings['itemId'].min(), ratings['itemId'].max() + 1))
         for line, value in enumerate(interact_status['negative_samples']):
+            # for item in all_items:
+                # if item not in interact_status['negative_samples'][line]:
+                    # interact_status['negative_samples'][line].append(item)
             interact_status.at[line, 'negative_samples'] = all_items
         return interact_status[['userId', 'negative_items', 'negative_samples']]
 
