@@ -17,13 +17,13 @@ gmf_config = {'alias': 'gmf_movielens',
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
-              'use_cuda': False,
+              'use_cuda': True,
               'device_id': 0,
               'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_movielens',
               'num_epoch': 50,
-              'batch_size': 1024,
+              'batch_size': 256,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
               'num_users': 5765,
@@ -35,7 +35,7 @@ mlp_config = {'alias': 'mlp_movielens',
               'use_cuda': True,
               'device_id': 0,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_factor8neg4_movielens_Epoch26_HR0.4158_NDCG0.5995.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
               'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_movielens',
@@ -79,7 +79,7 @@ gmf_config = {'alias': 'gmf_amazonbeauty',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
-              'model_dir':'checkpoints/amazonbeauty_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_amazonbeauty',
               'num_epoch': 50,
@@ -96,7 +96,7 @@ mlp_config = {'alias': 'mlp_amazonbeauty',
               'device_id': 0,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
-              'model_dir':'checkpoints/amazonbeauty_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_amazonbeauty',
                 'num_epoch': 50,
@@ -115,7 +115,7 @@ neumf_config = {'alias': 'neumf_amazonbeauty',
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
-                'model_dir':'checkpoints/amazonbeauty_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################
 ##################################################################################################################
@@ -139,7 +139,7 @@ gmf_config = {'alias': 'gmf_goodbooks',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
-              'model_dir':'checkpoints/goodbooks_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_goodbooks',
               'num_epoch': 50,
@@ -156,7 +156,7 @@ mlp_config = {'alias': 'mlp_goodbooks',
               'device_id': 0,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
-              'model_dir':'checkpoints/goodbooks_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_goodbooks',
                 'num_epoch': 50,
@@ -175,7 +175,7 @@ neumf_config = {'alias': 'neumf_goodbooks',
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
-                'model_dir':'checkpoints/goodbooks_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################
 ##################################################################################################################
@@ -199,7 +199,7 @@ gmf_config = {'alias': 'gmf_netflix',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
-              'model_dir':'checkpoints/netflix_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_netflix',
               'num_epoch': 50,
@@ -216,7 +216,7 @@ mlp_config = {'alias': 'mlp_netflix',
               'device_id': 0,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
-              'model_dir':'checkpoints/netflix_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_netflix',
                 'num_epoch': 50,
@@ -235,7 +235,30 @@ neumf_config = {'alias': 'neumf_netflix',
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
-                'model_dir':'checkpoints/netflix_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################
+##################################################################################################################
+# moviesdat config
+
+##################################################################################################################
+##################################################################################################################
+# yahoo_all config
+
+##################################################################################################################
+##################################################################################################################
+# booksrec config
+
+##################################################################################################################
+##################################################################################################################
+# animerec config
+
+##################################################################################################################
+##################################################################################################################
+# animerec20 config
+
+##################################################################################################################
+##################################################################################################################
+# amazonbooks config
+
 ##################################################################################################################

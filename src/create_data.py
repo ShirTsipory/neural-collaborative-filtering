@@ -401,6 +401,39 @@ def create_amazonbeauty_corpus():  # https://www.kaggle.com/skillsmuggler/amazon
                         writer.writerow([user, cus_id, rating, date])
 
 
+def create_amazonbooks_corpus():  # https://www.kaggle.com/skillsmuggler/amazon-ratings
+    # We create a random timestamp.
+    # Because the item id isn't int, we make sure to pass every id to an int id.
+    file_out = './data/amazonbooks_corpus_temp.csv'  # The file of the output, the ready corpus
+    data_dir = './data/amazonbooks'  # The directory of the files.
+    count = 0
+    user_to_num = {}
+    user_counter = 1
+    id_to_num = {}
+    id_counter = 1
+    with open(file_out, 'w', newline='') as w_file:
+        writer = csv.writer(w_file, delimiter=',', quotechar='"', escapechar='\n', quoting=csv.QUOTE_NONE)
+        for file in sorted(os.listdir(data_dir)):
+            print(file)
+            with codecs.open(os.path.join(data_dir, file), 'rU', encoding="utf8") as r_file:
+                for line in r_file:
+                    if count < 1:
+                        count += 1
+                    elif count >= 1:
+                        line = line.split(',')
+                        if line[0] not in user_to_num.keys():
+                            user_to_num[line[0]] = user_counter
+                            user_counter += 1
+                        user = user_to_num[line[0]]
+                        if line[1] not in id_to_num.keys():
+                            id_to_num[line[1]] = id_counter
+                            id_counter += 1
+                        cus_id = id_to_num[line[1]]
+                        rating = line[2][:-1]
+                        date = line[3][:-1]
+                        writer.writerow([user, cus_id, rating, date])
+
+
 def create_yahoo_all_corpus():  # https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=48
     file_out = './data/yahoo_all_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/yahoo_all'  # The directory of the files.
@@ -477,25 +510,29 @@ def create_yahoo_all_corpus():  # https://webscope.sandbox.yahoo.com/catalog.php
 
 
 def main():
-    ##### create_movielens_corpus(min_usr_len = 1, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
-    create_netflix_corpus()
-    create_final_corpus_all('./data/netflix_corpus.csv', './data/netflix_corpus_temp.csv', min_usr_len = 3, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 100, max_items_cnt = 130000)
+    ##### create_movielens_corpus(min_usr_len=1, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=10000)
+    ##### create_netflix_corpus()
+    #create_final_corpus_all('./data/netflix_corpus.csv', './data/netflix_corpus_temp.csv', min_usr_len=3,
+     #                       max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=130000)
     # create_moviesdat_corpus()
-    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
-    # create_yahoo_corpus()
-    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
-    # create_yahoo_all_corpus()
-    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    #create_final_corpus_all('./data/moviesdat_corpus.csv', './data/moviesdat_corpus_temp.csv',min_usr_len=100, max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=100000)
+    ##### create_yahoo_all_corpus()
+    create_final_corpus_all('./data/yahoo_all_corpus.csv', './data/yahoo_all_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=100000)
     ##### create_goodbooks_corpus()
-    ##### create_final_corpus_all('./data/goodbooks_corpus.csv', './data/goodbooks_corpus_temp.csv', min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 5, max_items_cnt = 10000)
+    ##### create_final_corpus_all('./data/goodbooks_corpus.csv', './data/goodbooks_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=5, max_items_cnt=10000)
     # create_booksrec_corpus()
-    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    #create_final_corpus_all('./data/booksrec_corpus.csv', './data/booksrec_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=5, max_items_cnt=10000)
     # create_animerec_corpus()
-    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    #create_final_corpus_all('./data/animerec_corpus.csv', './data/animerec_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=100000)
     # create_animerec20_corpus()
-    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    #create_final_corpus_all('./data/animerec20_corpus.csv', './data/animerec20_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=15, max_items_cnt=100000)
     create_amazonbeauty_corpus()
-    create_final_corpus_all('./data/amazonbeauty_corpus.csv', './data/amazonbeauty_corpus_temp.csv', min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 5, max_items_cnt = 50000)
+    create_final_corpus_all('./data/amazonbeauty_corpus.csv', './data/amazonbeauty_corpus_temp.csv', min_usr_len=2,
+                            max_usr_len=1000, fin_usr_len=4, min_items_cnt=5, max_items_cnt=50000)
+    create_amazonbooks_corpus()
+    create_final_corpus_all('./data/amazonbooks_corpus.csv', './data/amazonbooks_corpus_temp.csv', min_usr_len=10,
+                            max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=10000)
+
 
 
 if __name__ == '__main__':
