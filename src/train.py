@@ -32,7 +32,7 @@ gmf_config = {'alias': 'gmf_movielens',
 
 mlp_config = {'alias': 'mlp_movielens',
               'num_epoch': 50,
-              'batch_size': 1024,
+              'batch_size': 256,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
               'num_users': 5765,
@@ -44,7 +44,7 @@ mlp_config = {'alias': 'mlp_movielens',
               'use_cuda': True,
               'device_id': 0,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_factor8neg4_movielens_Epoch26_HR0.4158_NDCG0.5995.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
               'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_movielens',
@@ -62,7 +62,7 @@ neumf_config = {'alias': 'neumf_movielens',
                 'use_cuda': True,
                 'device_id': 0,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_factor8neg4_movielens_Epoch26_HR0.4158_NDCG0.5995.model'),
+                'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('movielens_mlp_factor8neg4_pretrain_movielens_Epoch41_HR0.4477_NDCG0.6280.model'),
                 'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
@@ -88,10 +88,10 @@ print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating
 sample_generator = SampleGenerator(ratings=ml1m_rating)
 evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
-config = gmf_config
-engine = GMFEngine(config)
-# config = mlp_config
-# engine = MLPEngine(config)
+# config = gmf_config
+# engine = GMFEngine(config)
+config = mlp_config
+engine = MLPEngine(config)
 # config = neumf_config
 # engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
