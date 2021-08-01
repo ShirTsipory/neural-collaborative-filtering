@@ -8,6 +8,73 @@ import pandas as pd
 import numpy as np
 
 
+def create_final_corpus_all(file_out, data_dir, min_usr_len, max_usr_len, fin_usr_len, min_items_cnt, max_items_cnt):
+    print(data_dir)
+    raw_data = pd.read_csv(data_dir, sep=',',
+                           names=['user', 'item', 'rating', 'timestamp'],
+                           dtype={'user': int, 'item': int, 'rating': float, 'timestamp': float},
+                           engine='python')
+
+    sample_row = raw_data.iloc[0, :]
+    if pd.isna(sample_row.rating):
+        raw_data.rating = np.ones(len(raw_data))
+    if pd.isna(sample_row.timestamp):
+        raw_data.timestamp = np.ones(len(raw_data))
+
+    # user item id map
+    raw_num_users = len(pd.unique(raw_data.user))
+    raw_num_items = len(pd.unique(raw_data.item))
+
+    print('# raw users: %d' % (raw_num_users))
+    print('# raw items: %d' % (raw_num_items))
+
+    # Filter positive threshold
+    raw_data = raw_data[raw_data['rating'] > 4.0]
+
+    # Filter users
+    num_items_by_user = raw_data.groupby('user', as_index=False).size()
+    num_items_by_user = num_items_by_user.set_index('user')
+    user_filter_idx = raw_data['user'].isin(
+        num_items_by_user.index[(num_items_by_user['size'] > min_usr_len)
+                                & (num_items_by_user['size'] < max_usr_len)])
+    raw_data = raw_data[user_filter_idx]
+
+    # Filter items
+    num_users_by_item = raw_data.groupby('item', as_index=False).size()
+    num_users_by_item = num_users_by_item.set_index('item')
+    item_filter_idx = raw_data['item'].isin(
+        num_users_by_item.index[(num_users_by_item['size'] > min_items_cnt)
+                                & (num_users_by_item['size'] < max_items_cnt)])
+    raw_data = raw_data[item_filter_idx]
+    num_users_by_item = raw_data.groupby('item', as_index=False).size()
+    num_users_by_item = num_users_by_item.set_index('item')
+
+    # Filter users
+    num_items_by_user = raw_data.groupby('user', as_index=False).size()
+    num_items_by_user = num_items_by_user.set_index('user')
+    user_filter_idx = raw_data['user'].isin(
+        num_items_by_user.index[(num_items_by_user['size'] >= fin_usr_len)
+                                & (num_items_by_user['size'] <= max_usr_len)])
+    raw_data = raw_data[user_filter_idx]
+    num_items_by_user = raw_data.groupby('user', as_index=False).size()
+    num_items_by_user = num_items_by_user.set_index('user')
+    print(raw_data.shape[0])
+
+    num_users = len(pd.unique(raw_data.user))
+    num_items = len(pd.unique(raw_data.item))
+    print('# user after filter (min %d user len): %d' % (min_usr_len, num_users))
+    print('# items after filter (min %d items cnt): %d' % (min_items_cnt, num_items))
+
+    with open(file_out, 'w', newline='') as w_file:
+        writer = csv.writer(w_file, delimiter=',', quotechar='"', escapechar='\n', quoting=csv.QUOTE_NONE)
+        for idx, line in raw_data.iterrows():
+            user = line['user']
+            item = line['item']
+            rating = line['rating']
+            date = line['timestamp']
+            writer.writerow([user, item, rating, date])
+
+
 def create_movielens_corpus(min_usr_len, max_usr_len, fin_usr_len, min_items_cnt, max_items_cnt):  # MovieLens: https://grouplens.org/datasets/movielens/
     file_out = './data/movielens_corpus.csv'  # The file of the output, the ready corpus
     data_dir = './data/movielens'  # The directory of the files.
@@ -33,7 +100,7 @@ def create_movielens_corpus(min_usr_len, max_usr_len, fin_usr_len, min_items_cnt
         print('# raw items: %d' % (raw_num_items))
 
         # Filter positive threshold
-        raw_data = raw_data[raw_data['rating'] > 0.0]
+        raw_data = raw_data[raw_data['rating'] > 4.0]
 
         # Filter users
         num_items_by_user = raw_data.groupby('user', as_index=False).size()
@@ -130,8 +197,8 @@ def create_movielens_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_c
                     writer.writerow([user, cus_id, rating, date])
 """
 
-def create_netflix_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/netflix-inc/netflix-prize-data
-    file_out = './data/netflix_corpus.csv'  # The file of the output, the ready corpus
+def create_netflix_corpus():  # https://www.kaggle.com/netflix-inc/netflix-prize-data
+    file_out = './data/netflix_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/netflix'  # The directory of the files.
     with open(file_out, 'w', newline='') as w_file:
         writer = csv.writer(w_file, delimiter=',', quotechar='"', escapechar='\n', quoting=csv.QUOTE_NONE)
@@ -146,8 +213,8 @@ def create_netflix_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt
                         writer.writerow([str(user), str(cus_id), str(rating), str(date)])
 
 
-def create_moviesdat_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/rounakbanik/the-movies-dataset
-    file_out = './data/moviesdat_corpus.csv'  # The file of the output, the ready corpus
+def create_moviesdat_corpus():  # https://www.kaggle.com/rounakbanik/the-movies-dataset
+    file_out = './data/moviesdat_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/moviesdat'  # The directory of the files.
     count = 0
     with open(file_out, 'w', newline='') as w_file:
@@ -167,9 +234,9 @@ def create_moviesdat_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_c
                         writer.writerow([user, cus_id, rating, date])
 
 
-def create_yahoo_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=48
+def create_yahoo_corpus():  # https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=48
     # We create a random timestamp.
-    file_out = './data/yahoo_corpus.csv'  # The file of the output, the ready corpus
+    file_out = './data/yahoo_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/yahoo'  # The directory of the files.
     start_date = datetime.date(2000, 1, 1)
     with open(file_out, 'w', newline='') as w_file:
@@ -191,9 +258,9 @@ def create_yahoo_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):
                         writer.writerow([user, cus_id, rating, int(date)])
 
 
-def create_goodbooks_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/zygmunt/goodbooks-10k
+def create_goodbooks_corpus():  # https://www.kaggle.com/zygmunt/goodbooks-10k
     # The data is sorted by time so we create a timestamp accordingly.
-    file_out = './data/goodbooks_corpus.csv'  # The file of the output, the ready corpus
+    file_out = './data/goodbooks_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/goodbooks'  # The directory of the files.
     count = 0
     last_cus = '0'
@@ -220,10 +287,10 @@ def create_goodbooks_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_c
                         writer.writerow([user, cus_id, rating, int(date)])
 
 
-def create_booksrec_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/arashnic/book-recommendation-dataset
+def create_booksrec_corpus():  # https://www.kaggle.com/arashnic/book-recommendation-dataset
     # We create a random timestamp.
     # Because the item id isn't int, we make sure to pass every id to an int id.
-    file_out = './data/booksrec_corpus.csv'  # The file of the output, the ready corpus
+    file_out = './data/booksrec_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/booksrec'  # The directory of the files.
     count = 0
     start_date = datetime.date(2000, 1, 1)
@@ -251,9 +318,9 @@ def create_booksrec_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cn
                         writer.writerow([user, cus_id, rating, int(date)])
 
 
-def create_animerec_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/CooperUnion/anime-recommendations-database
+def create_animerec_corpus():  # https://www.kaggle.com/CooperUnion/anime-recommendations-database
     # We create a random timestamp.
-    file_out = './data/animerec_corpus.csv'  # The file of the output, the ready corpus
+    file_out = './data/animerec_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/animerec'  # The directory of the files.
     count = 0
     start_date = datetime.date(2000, 1, 1)
@@ -276,9 +343,9 @@ def create_animerec_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cn
                         writer.writerow([user, cus_id, rating, int(date)])
 
 
-def create_animerec20_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/hernan4444/anime-recommendation-database-2020
+def create_animerec20_corpus():  # https://www.kaggle.com/hernan4444/anime-recommendation-database-2020
     # We create a random timestamp.
-    file_out = './data/animerec20_corpus.csv'  # The file of the output, the ready corpus
+    file_out = './data/animerec20_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/animerec20'  # The directory of the files.
     count = 0
     start_date = datetime.date(2000, 1, 1)
@@ -301,10 +368,10 @@ def create_animerec20_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_
                         writer.writerow([user, cus_id, rating, int(date)])
 
 
-def create_amazonbeauty_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://www.kaggle.com/skillsmuggler/amazon-ratings
+def create_amazonbeauty_corpus():  # https://www.kaggle.com/skillsmuggler/amazon-ratings
     # We create a random timestamp.
     # Because the item id isn't int, we make sure to pass every id to an int id.
-    file_out = './data/amazonbeauty_corpus.csv'  # The file of the output, the ready corpus
+    file_out = './data/amazonbeauty_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/amazonbeauty'  # The directory of the files.
     count = 0
     user_to_num = {}
@@ -334,8 +401,8 @@ def create_amazonbeauty_corpus(min_usr_len, max_usr_len, min_items_cnt, max_item
                         writer.writerow([user, cus_id, rating, date])
 
 
-def create_yahoo_all_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_cnt):  # https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=48
-    file_out = './data/yahoo_all_corpus.csv'  # The file of the output, the ready corpus
+def create_yahoo_all_corpus():  # https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=48
+    file_out = './data/yahoo_all_corpus_temp.csv'  # The file of the output, the ready corpus
     data_dir = './data/yahoo_all'  # The directory of the files.
     user_counter = 0
     item_counter = 0
@@ -410,16 +477,25 @@ def create_yahoo_all_corpus(min_usr_len, max_usr_len, min_items_cnt, max_items_c
 
 
 def main():
-    create_movielens_corpus(min_usr_len = 1, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
-    #create_netflix_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 100, max_items_cnt = 130000)
-    #create_moviesdat_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 100, max_items_cnt = 100000)
-    #create_yahoo_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 10, max_items_cnt = 100000)
-    #create_yahoo_all_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 10, max_items_cnt = 100000)
-    #create_goodbooks_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 5, max_items_cnt = 10000)
-    #create_booksrec_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 5, max_items_cnt = 10000)
-    #create_animerec_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 10, max_items_cnt = 100000)
-    #create_animerec20_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 15, max_items_cnt = 100000)
-    #create_amazonbeauty_corpus(min_usr_len = 4, max_usr_len = 1000, min_items_cnt = 5, max_items_cnt = 50000)
+    ##### create_movielens_corpus(min_usr_len = 1, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    # create_netflix_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    # create_moviesdat_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    # create_yahoo_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    # create_yahoo_all_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    create_goodbooks_corpus()
+    create_final_corpus_all('./data/goodbooks_corpus.csv', './data/goodbooks_corpus_temp.csv', min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 5, max_items_cnt = 10000)
+    # create_booksrec_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    # create_animerec_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    # create_animerec20_corpus()
+    #create_final_corpus_all(min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 10, max_items_cnt = 10000)
+    create_amazonbeauty_corpus()
+    create_final_corpus_all('./data/amazonbeauty_corpus.csv', './data/amazonbeauty_corpus_temp.csv', min_usr_len = 2, max_usr_len = 1000, fin_usr_len = 4, min_items_cnt = 5, max_items_cnt = 50000)
 
 
 if __name__ == '__main__':

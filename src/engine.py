@@ -88,10 +88,10 @@ class Engine(object):
                                  negative_users.data.view(-1).tolist(),
                                  negative_items.data.view(-1).tolist(),
                                  negative_scores.data.view(-1).tolist()]
+        mpr = self._metron1.cal_mpr()
         hit_ratio1, mrr1, ndcg1 = self._metron1.cal_hit_ratio(), self._metron1.cal_mrr(), self._metron1.cal_ndcg()
         hit_ratio2, mrr2, ndcg2 = self._metron2.cal_hit_ratio(), self._metron2.cal_mrr(), self._metron2.cal_ndcg()
         hit_ratio3, mrr3, ndcg3 = self._metron3.cal_hit_ratio(), self._metron3.cal_mrr(), self._metron3.cal_ndcg()
-        mpr = self._metron1.cal_mpr()
         self._writer.add_scalar('performance/HR@5', hit_ratio1, epoch_id)
         self._writer.add_scalar('performance/HR@10', hit_ratio2, epoch_id)
         self._writer.add_scalar('performance/HR@20', hit_ratio3, epoch_id)
