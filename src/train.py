@@ -9,7 +9,7 @@ from data import SampleGenerator
 # os.environ['CUDA_VISIBLE_DEVICES'] = "1"
 
 
-gmf_config = {'alias': 'gmf_yahoo',
+gmf_config = {'alias': 'gmf_goodbooks',
               'num_epoch': 50,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -21,8 +21,8 @@ gmf_config = {'alias': 'gmf_yahoo',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 19151,
-              'num_items': 17711,
+              'num_users': 18645,
+              'num_items': 9851,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
@@ -30,13 +30,13 @@ gmf_config = {'alias': 'gmf_yahoo',
               'device_id': 0,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-mlp_config = {'alias': 'mlp_yahoo',
+mlp_config = {'alias': 'mlp_goodbooks',
               'num_epoch': 50,
               'batch_size': 256,  # 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 19151,
-              'num_items': 17711,
+              'num_users': 18645,
+              'num_items': 9851,
               'latent_dim': 8,
               'num_negative': 4,
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
@@ -47,13 +47,13 @@ mlp_config = {'alias': 'mlp_yahoo',
               'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_yahoo',
+neumf_config = {'alias': 'neumf_goodbooks',
                 'num_epoch': 50,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
-                'num_users': 19151,
-                'num_items': 17711,
+                'num_users': 18645,
+                'num_items': 9851,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
@@ -70,9 +70,9 @@ neumf_config = {'alias': 'neumf_yahoo',
 
 # Load Data
 ##### ml1m_dir = 'data/movielens_corpus.csv'
-# ml1m_dir = 'data/amazonbeauty/amazonbeauty_corpus.csv'
-# ml1m_dir = 'data/goodbooks/goodbooks_corpus.csv'
-ml1m_dir = 'data/goodbooks/yahoo_all_corpus.csv'
+# ml1m_dir = 'data/amazonbeauty_corpus.csv'
+ml1m_dir = 'data/goodbooks_corpus.csv'
+# ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex

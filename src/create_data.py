@@ -512,12 +512,12 @@ def create_yahoo_all_corpus():  # https://webscope.sandbox.yahoo.com/catalog.php
 def main():
     ##### create_movielens_corpus(min_usr_len=1, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=10000)
     ##### create_netflix_corpus()
-    #create_final_corpus_all('./data/netflix_corpus.csv', './data/netflix_corpus_temp.csv', min_usr_len=3,
-     #                       max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=130000)
-    # create_moviesdat_corpus()
-    #create_final_corpus_all('./data/moviesdat_corpus.csv', './data/moviesdat_corpus_temp.csv',min_usr_len=100, max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=100000)
+    create_final_corpus_all('./data/netflix_corpus.csv', './data/netflix_corpus_temp.csv', min_usr_len=3,
+                            max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=130000)
+    ##### create_moviesdat_corpus()
+    ##### create_final_corpus_all('./data/moviesdat_corpus.csv', './data/moviesdat_corpus_temp.csv',min_usr_len=100, max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=100000)
     ##### create_yahoo_all_corpus()
-    create_final_corpus_all('./data/yahoo_all_corpus.csv', './data/yahoo_all_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=100000)
+    ##### create_final_corpus_all('./data/yahoo_all_corpus.csv', './data/yahoo_all_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=100000)
     ##### create_goodbooks_corpus()
     ##### create_final_corpus_all('./data/goodbooks_corpus.csv', './data/goodbooks_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=5, max_items_cnt=10000)
     # create_booksrec_corpus()
@@ -526,12 +526,12 @@ def main():
     #create_final_corpus_all('./data/animerec_corpus.csv', './data/animerec_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=100000)
     # create_animerec20_corpus()
     #create_final_corpus_all('./data/animerec20_corpus.csv', './data/animerec20_corpus_temp.csv', min_usr_len=2, max_usr_len=1000, fin_usr_len=4, min_items_cnt=15, max_items_cnt=100000)
-    create_amazonbeauty_corpus()
-    create_final_corpus_all('./data/amazonbeauty_corpus.csv', './data/amazonbeauty_corpus_temp.csv', min_usr_len=2,
-                            max_usr_len=1000, fin_usr_len=4, min_items_cnt=5, max_items_cnt=50000)
-    create_amazonbooks_corpus()
-    create_final_corpus_all('./data/amazonbooks_corpus.csv', './data/amazonbooks_corpus_temp.csv', min_usr_len=10,
-                            max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=10000)
+    ##### create_amazonbeauty_corpus()
+    ##### create_final_corpus_all('./data/amazonbeauty_corpus.csv', './data/amazonbeauty_corpus_temp.csv', min_usr_len=2,
+    #####                        max_usr_len=1000, fin_usr_len=4, min_items_cnt=5, max_items_cnt=50000)
+    ##### create_amazonbooks_corpus()
+    ##### create_final_corpus_all('./data/amazonbooks_corpus.csv', './data/amazonbooks_corpus_temp.csv', min_usr_len=10,
+    #####                        max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=10000)
 
 
 
