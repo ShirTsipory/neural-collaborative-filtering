@@ -14,9 +14,7 @@ class Engine(object):
 
     def __init__(self, config):
         self.config = config  # model configuration
-        self._metron1 = MetronAtK(top_k=5)
-        self._metron2 = MetronAtK(top_k=10)
-        self._metron3 = MetronAtK(top_k=20)
+        self._metron = MetronAtK(top_k=[5, 10, 20])
         self._writer = SummaryWriter(log_dir='runs/{}'.format(config['alias']))  # tensorboard writer
         self._writer.add_text('config', str(config), 0)
         self.opt = use_optimizer(self.model, config)
@@ -70,28 +68,17 @@ class Engine(object):
                 negative_users = negative_users.cpu()
                 negative_items = negative_items.cpu()
                 negative_scores = negative_scores.cpu()
-            self._metron1.subjects = [test_users.data.view(-1).tolist(),
+            self._metron.subjects = [test_users.data.view(-1).tolist(),
                                  test_items.data.view(-1).tolist(),
                                  test_scores.data.view(-1).tolist(),
                                  negative_users.data.view(-1).tolist(),
                                  negative_items.data.view(-1).tolist(),
                                  negative_scores.data.view(-1).tolist()]
-            self._metron2.subjects = [test_users.data.view(-1).tolist(),
-                                 test_items.data.view(-1).tolist(),
-                                 test_scores.data.view(-1).tolist(),
-                                 negative_users.data.view(-1).tolist(),
-                                 negative_items.data.view(-1).tolist(),
-                                 negative_scores.data.view(-1).tolist()]
-            self._metron3.subjects = [test_users.data.view(-1).tolist(),
-                                 test_items.data.view(-1).tolist(),
-                                 test_scores.data.view(-1).tolist(),
-                                 negative_users.data.view(-1).tolist(),
-                                 negative_items.data.view(-1).tolist(),
-                                 negative_scores.data.view(-1).tolist()]
-        mpr = self._metron1.cal_mpr()
-        hit_ratio1, mrr1, ndcg1 = self._metron1.cal_hit_ratio(), self._metron1.cal_mrr(), self._metron1.cal_ndcg()
-        hit_ratio2, mrr2, ndcg2 = self._metron2.cal_hit_ratio(), self._metron2.cal_mrr(), self._metron2.cal_ndcg()
-        hit_ratio3, mrr3, ndcg3 = self._metron3.cal_hit_ratio(), self._metron3.cal_mrr(), self._metron3.cal_ndcg()
+        mpr = self._metron.cal_mpr()
+        hit_ratio, mrr, ndcg = self._metron.cal_hit_ratio(), self._metron.cal_mrr(), self._metron.cal_ndcg()
+        hit_ratio1, hit_ratio2, hit_ratio3 = hit_ratio
+        mrr1, mrr2, mrr3 = mrr
+        ndcg1, ndcg2, ndcg3 = ndcg
         self._writer.add_scalar('performance/HR@5', hit_ratio1, epoch_id)
         self._writer.add_scalar('performance/HR@10', hit_ratio2, epoch_id)
         self._writer.add_scalar('performance/HR@20', hit_ratio3, epoch_id)
