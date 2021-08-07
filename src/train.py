@@ -44,7 +44,7 @@ mlp_config = {'alias': 'mlp_goodbooks',
               'use_cuda': True,
               'device_id': 0,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_goodbooks',
@@ -69,7 +69,7 @@ neumf_config = {'alias': 'neumf_goodbooks',
 
 
 # Load Data
-##### ml1m_dir = 'data/movielens_corpus.csv'
+#### ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
 ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
@@ -89,10 +89,10 @@ print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating
 sample_generator = SampleGenerator(ratings=ml1m_rating)
 evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
-config = gmf_config
-engine = GMFEngine(config)
-# config = mlp_config
-# engine = MLPEngine(config)
+# config = gmf_config
+# engine = GMFEngine(config)
+config = mlp_config
+engine = MLPEngine(config)
 # config = neumf_config
 # engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
