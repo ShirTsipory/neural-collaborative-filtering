@@ -32,30 +32,40 @@ class MetronAtK(object):
         test = pd.DataFrame({'user': test_users,
                              'test_item': test_items,
                              'test_score': test_scores})
+        print(test)
+        print()
         # because we are using all the items for the metrics we need to make sure the full data don't have
         # the test items with its own score.
-        temp = pd.DataFrame({'user': neg_users,
-                             'test_item': neg_items,
-                             'test_score': neg_scores})
-        temp['key1'] = 1
-        test['key2'] = 1
-        temp = pd.merge(temp, test, on=['user', 'test_item'], how='left')
-        temp = temp[~(temp.key2 == temp.key1)]
-        temp = temp.drop(['test_score_y','key1', 'key2'], axis=1)
-        temp.rename(columns={'test_score_x': 'test_score'}, inplace=True)
-        full = pd.concat([temp, test])
-        full = full.drop(['key2'], axis=1)
+        #temp = pd.DataFrame({'user': neg_users,
+        #                     'test_item': neg_items,
+        #                     'test_score': neg_scores})
+        #temp['key1'] = 1
+        #test['key2'] = 1
+        #temp = pd.merge(temp, test, on=['user', 'test_item'], how='left')
+        #temp = temp[~(temp.key2 == temp.key1)]
+        #temp = temp.drop(['test_score_y','key1', 'key2'], axis=1)
+        #temp.rename(columns={'test_score_x': 'test_score'}, inplace=True)
+        #full = pd.concat([temp, test])
+        #full = full.drop(['key2'], axis=1)
         # the full set
-        full.rename(columns={"test_item": "item", "test_score": "score"}, inplace=True)
-        #full = pd.DataFrame({'user': neg_users + test_users,
-        #                    'item': neg_items + test_items,
-        #                    'score': neg_scores + test_scores})
+        #full.rename(columns={"test_item": "item", "test_score": "score"}, inplace=True)
+        full = pd.DataFrame({'user': neg_users,
+                            'item': neg_items,
+                            'score': neg_scores})
+        print(full)
+        print()
         full = pd.merge(full, test, on=['user'], how='left')
+        print(full)
+        print()
         # test = pd.merge(test, full, on=['user'], how='left')
         # rank the items according to the scores for each user
         full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
+        print(full)
+        print()
         test['rank'] = test.groupby('user')['test_score'].rank(method='first', ascending=False)
         full.sort_values(['user', 'rank'], inplace=True)
+        print(full)
+        print()
         test.sort_values(['user', 'rank'], inplace=True)
         self._subjects = full
 

@@ -19,7 +19,7 @@ gmf_config = {'alias': 'gmf_movielens',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
-              'model_dir':'checkpoints/movielens_{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
+              'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_movielens',
               'num_epoch': 50,

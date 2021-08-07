@@ -9,7 +9,7 @@ from data import SampleGenerator
 # os.environ['CUDA_VISIBLE_DEVICES'] = "1"
 
 
-gmf_config = {'alias': 'gmf_goodbooks',
+gmf_config = {'alias': 'gmf_movielens',
               'num_epoch': 50,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -21,12 +21,12 @@ gmf_config = {'alias': 'gmf_goodbooks',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 18645,
-              'num_items': 9851,
+              'num_users': 5765,
+              'num_items': 1865,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
-              'use_cuda': True,
+              'use_cuda': False,
               'device_id': 0,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
@@ -69,9 +69,9 @@ neumf_config = {'alias': 'neumf_goodbooks',
 
 
 # Load Data
-##### ml1m_dir = 'data/movielens_corpus.csv'
+ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
-ml1m_dir = 'data/goodbooks_corpus.csv'
+# ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
