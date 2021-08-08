@@ -14,6 +14,8 @@ class NeuMF(torch.nn.Module):
         self.latent_dim_mf = config['latent_dim_mf']
         self.latent_dim_mlp = config['latent_dim_mlp']
 
+        self.embedding_user = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=8)
+        self.embedding_item = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=8)
         self.embedding_user_mlp = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_mlp)
         self.embedding_item_mlp = torch.nn.Embedding(num_embeddings=self.num_items, embedding_dim=self.latent_dim_mlp)
         self.embedding_user_mf = torch.nn.Embedding(num_embeddings=self.num_users, embedding_dim=self.latent_dim_mf)
