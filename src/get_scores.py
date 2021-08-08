@@ -27,14 +27,13 @@ neumf_config = {'alias': 'neumf_movielens',
                 'model_dir':'movielens_checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
+embedding_user_neumf = torch.nn.Embedding(num_embeddings=5765, embedding_dim=8)
+embedding_item_neumf = torch.nn.Embedding(num_embeddings=1865, embedding_dim=8)
 config = neumf_config
 neumf_model = NeuMF(config)
 if config['use_cuda'] is True:
     neumf_model.cuda()
 resume_checkpoint(neumf_model, model_dir=config['pretrain_neumf'], device_id=config['device_id'])
-
-embedding_user_neumf = torch.nn.Embedding(num_embeddings=5765, embedding_dim=8)
-embedding_item_neumf = torch.nn.Embedding(num_embeddings=1865, embedding_dim=8)
 
 embedding_user_neumf.weight.data = neumf_model.embedding_user.weight.data
 embedding_item_neumf.weight.data = neumf_model.embedding_item.weight.data

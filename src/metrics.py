@@ -6,6 +6,8 @@ class MetronAtK(object):
     def __init__(self, top_k):
         self._top_k = top_k
         self._subjects = None  # Subjects which we ran evaluation on
+        self._rank_list = None
+        self._test_list = None
 
     @property
     def top_k(self):
@@ -36,12 +38,72 @@ class MetronAtK(object):
         full = pd.DataFrame({'user': neg_users,
                             'item': neg_items,
                             'score': neg_scores})
-        full = pd.merge(full, test, on=['user'], how='left')
+        data_dict = {}  # Dictionary for all the items.
+        test_dict = {}  # Dictionary for the test items.
+        for idx, row in test.iterrows():
+            items_dict = {}
+            user = row['user']
+            test_dict[user] = row['test_item']
+            for index, line in full.iterrows():
+                if line['user'] == user:
+                    items_dict[line['item']] = line['score']
+                else:
+                    continue
+            rank = sorted(items_dict.items(), key=lambda x: x[1], reverse=True)
+            data_dict[user] = [i[0] for i in rank]
+        self._rank_list = data_dict
+        self._test_list = test_dict
+        #full = pd.merge(full, test, on=['user'], how='left')
         # rank the items according to the scores for each user
-        full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
-        full.sort_values(['user', 'rank'], inplace=True)
-        self._subjects = full
+        #full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
+        #full.sort_values(['user', 'rank'], inplace=True)
+        #self._subjects = full
 
+    def cal_hit_ratio(self):
+        # Hit Ratio @ top_K
+        dict, test, top_ks = self._rank_list, self._test_list, self._top_k
+        hr = []
+        count = 0
+        for k in top_ks:
+            for user in test.keys():
+                user_items = dict[user]
+                top_k = user_items[:k]
+                if test[user] in top_k:
+                    count += 1
+            hr.append(count / len(test.keys()))
+        return hr
+
+    def cal_mrr(self):
+        # MRR @ top_K
+        rec_rank = 0
+        dict, test, top_ks = self._rank_list, self._test_list, self._top_k
+        mrr = []
+        for k in top_ks:
+            for user in test.keys():
+                user_items = dict[user]
+                top_k = user_items[:k]
+                if test[user] in top_k:
+                    rec_rank += (1 / (top_k.index(test[user]) + 1))
+            mrr.append(rec_rank / len(test.keys()))
+        return mrr
+
+    def cal_mpr(self):
+        # MPR
+        rec_percent = 0
+        dict, test = self._rank_list, self._test_list
+        for user in test.keys():
+            user_items = dict[user]
+            rec_percent += ((top_k.index(test[user]) + 1) / len(user_items))
+        return 1 - (rec_percent / len(test.keys()))
+
+    def cal_ndcg(self):
+        dict, test, top_ks = self._rank_list, self._test_list, self._top_k
+        ndcg = []
+        for k in top_ks:
+            ndcg.append(0)
+        return ndcg
+
+    """
     def cal_hit_ratio(self):
         # Hit Ratio @ top_K
         full, top_ks = self._subjects, self._top_k
@@ -83,3 +145,4 @@ class MetronAtK(object):
             test_in_top_k['ndcg'] = test_in_top_k['rank'].apply(lambda x: math.log(2) / math.log(1 + x)) # the rank starts from 1
             ndcg.append(test_in_top_k['ndcg'].sum() * 1.0 / full['user'].nunique())
         return ndcg
+    """

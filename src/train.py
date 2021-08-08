@@ -62,16 +62,15 @@ neumf_config = {'alias': 'neumf_goodbooks',
                 'use_cuda': True,
                 'device_id': 0,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format('gmf_factor8neg4-implict_Epoch49_HR0.4618_NDCG0.6392.model'),
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
-
 # Load Data
-#### ml1m_dir = 'data/movielens_corpus.csv'
+ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
-ml1m_dir = 'data/goodbooks_corpus.csv'
+# ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
