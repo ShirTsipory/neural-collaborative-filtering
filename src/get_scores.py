@@ -33,8 +33,8 @@ if config['use_cuda'] is True:
     neumf_model.cuda()
 resume_checkpoint(neumf_model, model_dir=config['pretrain_neumf'], device_id=config['device_id'])
 
-embedding_user_neumf = torch.nn.Embedding(num_embeddings=config.num_users, embedding_dim=config.latent_dim_mlp)
-embedding_item_neumf = torch.nn.Embedding(num_embeddings=config.num_items, embedding_dim=config.latent_dim_mlp)
+embedding_user_neumf = torch.nn.Embedding(num_embeddings=5765, embedding_dim=8)
+embedding_item_neumf = torch.nn.Embedding(num_embeddings=1865, embedding_dim=8)
 
 embedding_user_neumf.weight.data = neumf_model.embedding_user.weight.data
 embedding_item_neumf.weight.data = neumf_model.embedding_item.weight.data
