@@ -5,9 +5,7 @@ from gmf import GMFEngine
 from mlp import MLPEngine
 from neumf import NeuMFEngine
 from data import SampleGenerator
-
 # os.environ['CUDA_VISIBLE_DEVICES'] = "1"
-
 
 gmf_config = {'alias': 'gmf_goodbooks',
               'num_epoch': 50,
@@ -68,9 +66,9 @@ neumf_config = {'alias': 'neumf_goodbooks',
                 }
 
 # Load Data
-ml1m_dir = 'data/movielens_corpus.csv'
+# ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
-# ml1m_dir = 'data/goodbooks_corpus.csv'
+ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
