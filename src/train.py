@@ -5,7 +5,7 @@ from gmf import GMFEngine
 from mlp import MLPEngine
 from neumf import NeuMFEngine
 from data import SampleGenerator
-# os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+# os.environ['CUDA_VISIBLE_DEVICES']='0, 1, 2, 3'
 
 gmf_config = {'alias': 'gmf_goodbooks',
               'num_epoch': 50,
@@ -26,6 +26,7 @@ gmf_config = {'alias': 'gmf_goodbooks',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
+              'device_id_2': 3,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_goodbooks',
@@ -41,6 +42,7 @@ mlp_config = {'alias': 'mlp_goodbooks',
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
               'device_id': 0,
+              'device_id_2': 3,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
@@ -59,6 +61,7 @@ neumf_config = {'alias': 'neumf_goodbooks',
                 'l2_regularization': 0.01,
                 'use_cuda': True,
                 'device_id': 0,
+                'device_id_2': 3,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
