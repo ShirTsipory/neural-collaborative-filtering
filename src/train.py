@@ -5,7 +5,7 @@ from gmf import GMFEngine
 from mlp import MLPEngine
 from neumf import NeuMFEngine
 from data import SampleGenerator
-os.environ['CUDA_VISIBLE_DEVICES']='0, 3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0, 3'
 
 gmf_config = {'alias': 'gmf_goodbooks',
               'num_epoch': 50,

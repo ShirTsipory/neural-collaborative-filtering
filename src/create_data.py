@@ -210,6 +210,8 @@ def create_netflix_corpus():  # https://www.kaggle.com/netflix-inc/netflix-prize
                         user = int(line.split(':')[0])
                     else:
                         cus_id, rating, date = line.split(',')
+                        date = date[:-1]
+                        date = time.mktime(datetime.datetime.strptime(date, "%Y-%m-%d").timetuple())
                         writer.writerow([str(user), str(cus_id), str(rating), str(date)])
 
 
@@ -511,7 +513,7 @@ def create_yahoo_all_corpus():  # https://webscope.sandbox.yahoo.com/catalog.php
 
 def main():
     ##### create_movielens_corpus(min_usr_len=1, max_usr_len=1000, fin_usr_len=4, min_items_cnt=10, max_items_cnt=10000)
-    ##### create_netflix_corpus()
+    #create_netflix_corpus()
     create_final_corpus_all('./data/netflix_corpus.csv', './data/netflix_corpus_temp.csv', min_usr_len=3,
                             max_usr_len=1000, fin_usr_len=4, min_items_cnt=100, max_items_cnt=130000)
     ##### create_moviesdat_corpus()
