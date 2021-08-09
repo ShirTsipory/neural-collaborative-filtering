@@ -28,6 +28,7 @@ class MetronAtK(object):
         assert isinstance(subjects, list)
         test_users, test_items, test_scores = subjects[0], subjects[1], subjects[2]
         neg_users, neg_items, neg_scores = subjects[3], subjects[4], subjects[5]
+        epoch_id = subjects[6]
         # The golden set
         test = pd.DataFrame({'user': test_users,
                              'test_item': test_items,
@@ -37,11 +38,12 @@ class MetronAtK(object):
                             'item': neg_items,
                             'score': neg_scores})
         full = pd.merge(full, test, on=['user'], how='left', copy=False)
-        print(full)
         # rank the items according to the scores for each user
         full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
         full.sort_values(['user', 'rank'], inplace=True)
         self._subjects = full
+        header = ['user', 'item', 'score', 'rank']
+        full.to_csv(r'./movilens_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', columns=header, index=False)
 
     def cal_hit_ratio(self):
         # Hit Ratio @ top_K

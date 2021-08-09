@@ -73,7 +73,7 @@ class Engine(object):
                                  test_scores.data.view(-1).tolist(),
                                  negative_users.data.view(-1).tolist(),
                                  negative_items.data.view(-1).tolist(),
-                                 negative_scores.data.view(-1).tolist()]
+                                 negative_scores.data.view(-1).tolist(), epoch_id]
         mpr = self._metron.cal_mpr()
         hit_ratio, mrr, ndcg = self._metron.cal_hit_ratio(), self._metron.cal_mrr(), self._metron.cal_ndcg()
         hit_ratio1, hit_ratio2, hit_ratio3 = hit_ratio

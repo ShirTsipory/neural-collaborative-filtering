@@ -46,34 +46,55 @@ mlp_config = {'alias': 'mlp_moviesdat',
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_moviesdat_Epoch45_HR0.0066_NDCG0.0125.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
-
-neumf_config = {'alias': 'neumf_netflix',
+"""
+neumf_config = {'alias': 'neumf_moviesdat',
                 'num_epoch': 50,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
-                'num_users': 10677,
-                'num_items': 2121,
+                'num_users': 11142,
+                'num_items': 2949,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 2,
-                'device_id_2': 2,
+                'device_id': 3,
+                'device_id_2': 3,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format('gmf_netflix_Epoch49_HR0.0645_NDCG0.0929.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_netflix_Epoch37_HR0.0968_NDCG0.1293.model'),
-                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}_try2.model'
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_moviesdat_Epoch45_HR0.0066_NDCG0.0125.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                }
+"""
+neumf_config = {'alias': 'neumf_movielens',
+                'num_epoch': 50,
+                'batch_size': 1024,
+                'optimizer': 'adam',
+                'adam_lr': 1e-3,
+                'num_users': 5765,
+                'num_items': 1865,
+                'latent_dim_mf': 8,
+                'latent_dim_mlp': 8,
+                'num_negative': 4,
+                'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
+                'l2_regularization': 0.01,
+                'use_cuda': True,
+                'device_id': 0,
+                'device_id_2': 0,
+                'pretrain': True,
+                'pretrain_mf': 'movielens_checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
+                'pretrain_mlp': 'movielens_checkpoints/{}'.format('movielens_mlp_movielens_Epoch49_HR0.0354_NDCG0.0652.model'),
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
 # Load Data
-# ml1m_dir = 'data/movielens_corpus.csv'
+ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
 # ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
-ml1m_dir = 'data/netflix_corpus.csv'
+# ml1m_dir = 'data/netflix_corpus.csv'
 # ml1m_dir = 'data/moviesdat_corpus.csv'
 # ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
