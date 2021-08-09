@@ -237,8 +237,8 @@ neumf_config = {'alias': 'neumf_netflix',
                 'device_id_2': 0,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_netflix_Epoch49_HR0.0645_NDCG0.0929.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_netflix_Epoch17_HR0.0948_NDCG0.1352.model'),
-                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_netflix_Epoch37_HR0.0968_NDCG0.1293.model'),
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}_try2.model'
                 }
 ##################################################################################################################
 ##################################################################################################################
