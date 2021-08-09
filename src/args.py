@@ -303,7 +303,7 @@ neumf_config = {'alias': 'neumf_moviesdat',
                 'device_id_2': 3,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_moviesdat_Epoch45_HR0.0066_NDCG0.0125.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_moviesdat_Epoch25_HR0.0066_NDCG0.0122.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################

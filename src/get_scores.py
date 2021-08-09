@@ -1,3 +1,4 @@
+"""
 import torch
 from neumf import NeuMF
 
@@ -41,3 +42,44 @@ embedding_item_neumf.weight.data = neumf_model.embedding_item.weight.data
 vector = torch.mul(embedding_user_neumf, embedding_item_neumf)
 
 print(vector)
+"""
+import codecs
+import csv
+import os
+from random import randrange
+import datetime
+import time
+import pandas as pd
+import numpy as np
+# names=['user', 'item', 'rating', 'timestamp'],
+#                        dtype={'user': int, 'item': int, 'rating': float, 'timestamp': float},
+#                        engine='python'
+raw_data = pd.read_csv('movilens_csv/scores_epoch_0.csv', sep=',')
+print(raw_data)
+test = raw_data[raw_data['test_item'] == raw_data['item']]
+print(test)
+#test_items = test['test_item'].values
+#print(test_items)
+#print(len(test_items))
+#items_set = set(test_items)
+trained = pd.read_csv('movilens_csv/scores_epoch_27.csv', sep=',')
+print(trained)
+test_partly = test[['user', 'item']]
+print(test_partly)
+full = pd.merge(test_partly, trained, on=['user', 'item'], how='left')
+print(full)
+# selecting rows based on condition
+#result = trained.loc[~trained['item'].isin(items_set)]
+#print(result)
+#for index, row in trained.iterrows():
+#    if row['item'] in items_set:
+
+with open('ncf_movielens_scores.csv', 'w', newline='') as w_file:
+    writer = csv.writer(w_file, delimiter=',', quotechar='"', escapechar='\n', quoting=csv.QUOTE_NONE)
+    writer.writerow(['user', 'item', 'score', 'rank'])
+    for idx, line in full.iterrows():
+        user = line['user']
+        item = line['item']
+        score = line['score']
+        rank = line['rank']
+        writer.writerow([user, item, score, rank])
