@@ -60,7 +60,15 @@ class Engine(object):
                 negative_users = negative_users.cuda()
                 negative_items = negative_items.cuda()
             test_scores = self.model(test_users, test_items)
-            negative_scores = self.model(negative_users, negative_items)
+            #negative_scores = self.model(negative_users, negative_items)
+            batches = 10
+            batch_size = int(len(negative_users) / batches)
+            neg_users = torch.split(negative_users, batch_size)
+            neg_items = torch.split(negative_items, batch_size)
+            negative_scores = self.model(neg_users[0], neg_items[0])
+            for part in range(1, len(neg_users)):
+                neg_scores = self.model(neg_users[part], neg_items[part])
+                negative_scores = torch.cat((negative_scores, neg_scores))
             if self.config['use_cuda'] is True:
                 test_users = test_users.cpu()
                 test_items = test_items.cpu()

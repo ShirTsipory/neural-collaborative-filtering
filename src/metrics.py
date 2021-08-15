@@ -42,9 +42,7 @@ class MetronAtK(object):
         full['rank'] = full.groupby('user')['score'].rank(method='first', ascending=False)
         full.sort_values(['user', 'rank'], inplace=True)
         self._subjects = full
-        # header = ['user', 'item', 'score', 'rank']
-        # full.to_csv(r'./movilens_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
-        # full.to_csv(r'./movilens_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', columns=header, index=False)
+        # full.to_csv(r'./movilens_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)  ########
 
     def cal_hit_ratio(self):
         # Hit Ratio @ top_K
@@ -65,7 +63,7 @@ class MetronAtK(object):
             top_k = full[full['rank'] <= k]
             test_in_top_k = top_k[top_k['test_item'] == top_k['item']]
             for rate in test_in_top_k['rank']:
-                rec_rank += (1 / rate)
+                rec_rank += (1 / rate + 1)
             mrr.append(rec_rank / full['user'].nunique())
         return mrr
 

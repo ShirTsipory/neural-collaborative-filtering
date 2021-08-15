@@ -54,6 +54,9 @@ import numpy as np
 # names=['user', 'item', 'rating', 'timestamp'],
 #                        dtype={'user': int, 'item': int, 'rating': float, 'timestamp': float},
 #                        engine='python'
+
+# taking out only the test items but I need to reindex them back.
+
 raw_data = pd.read_csv('movilens_csv/scores_epoch_0.csv', sep=',')
 print(raw_data)
 test = raw_data[raw_data['test_item'] == raw_data['item']]
