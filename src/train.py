@@ -40,7 +40,7 @@ mlp_config = {'alias': 'mlp_goodbooks',
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
-              'device_id': 3,
+              'device_id': 0,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
@@ -61,7 +61,7 @@ neumf_config = {'alias': 'neumf_goodbooks',
                 'device_id': 0,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_goodbooks_Epoch47_HR0.0198_NDCG0.0363.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
@@ -82,6 +82,7 @@ item_id = ml1m_rating[['mid']].drop_duplicates()
 item_id['itemId'] = np.arange(len(item_id))
 ml1m_rating = pd.merge(ml1m_rating, item_id, on=['mid'], how='left')
 # ml1m_rating.to_csv('new_index_movielens.csv', encoding='utf-8', index=False)  ###########################
+ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
 ml1m_rating = ml1m_rating[['userId', 'itemId', 'rating', 'timestamp']]
 print('Range of userId is [{}, {}]'.format(ml1m_rating.userId.min(), ml1m_rating.userId.max()))
 print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating.itemId.max()))
@@ -91,10 +92,10 @@ evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
 # config = gmf_config
 # engine = GMFEngine(config)
-config = mlp_config
-engine = MLPEngine(config)
-# config = neumf_config
-# engine = NeuMFEngine(config)
+# config = mlp_config
+# engine = MLPEngine(config)
+config = neumf_config
+engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)

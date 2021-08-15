@@ -43,6 +43,7 @@ class MetronAtK(object):
         full.sort_values(['user', 'rank'], inplace=True)
         self._subjects = full
         # full.to_csv(r'./movilens_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)  ########
+        full.to_csv(r'./csvs/goodbooks_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)  ########
 
     def cal_hit_ratio(self):
         # Hit Ratio @ top_K
@@ -56,10 +57,10 @@ class MetronAtK(object):
 
     def cal_mrr(self):
         # MRR @ top_K
-        rec_rank = 0
         full, top_ks = self._subjects, self._top_k
         mrr = []
         for k in top_ks:
+            rec_rank = 0
             top_k = full[full['rank'] <= k]
             test_in_top_k = top_k[top_k['test_item'] == top_k['item']]
             for rate in test_in_top_k['rank']:
