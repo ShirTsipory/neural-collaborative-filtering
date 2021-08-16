@@ -43,7 +43,8 @@ class MetronAtK(object):
         full.sort_values(['user', 'rank'], inplace=True)
         self._subjects = full
         # full.to_csv(r'./csvs/movielens_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
-        full.to_csv(r'./csvs/netflix_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
+        # full.to_csv(r'./csvs/netflix_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
+        full.to_csv(r'./csvs/moviesdat_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
         #full.to_csv(r'./csvs/amazonbeauty_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
         # full.to_csv(r'./csvs/goodbooks_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
 
