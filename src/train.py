@@ -7,7 +7,7 @@ from neumf import NeuMFEngine
 from data import SampleGenerator
 # os.environ['CUDA_VISIBLE_DEVICES'] = '0, 3'
 
-gmf_config = {'alias': 'gmf_goodbooks',
+gmf_config = {'alias': 'gmf_amazonbeauty',
               'num_epoch': 50,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -19,8 +19,8 @@ gmf_config = {'alias': 'gmf_goodbooks',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 18645,
-              'num_items': 9851,
+              'num_users': 18150,
+              'num_items': 13570,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
@@ -28,13 +28,13 @@ gmf_config = {'alias': 'gmf_goodbooks',
               'device_id': 0,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-mlp_config = {'alias': 'mlp_goodbooks',
+mlp_config = {'alias': 'mlp_amazonbeauty',
               'num_epoch': 50,
               'batch_size': 256,  # 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 18645,
-              'num_items': 9851,
+              'num_users': 18150,
+              'num_items': 13570,
               'latent_dim': 8,
               'num_negative': 4,
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
@@ -42,33 +42,33 @@ mlp_config = {'alias': 'mlp_goodbooks',
               'use_cuda': True,
               'device_id': 0,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbeauty_Epoch49_HR0.0045_NDCG0.0084.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_goodbooks',
+neumf_config = {'alias': 'neumf_amazonbeauty',
                 'num_epoch': 50,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
-                'num_users': 18645,
-                'num_items': 9851,
+                'num_users': 18150,
+                'num_items': 13570,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 0,
+                'device_id': 2,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format('gmf_goodbooks_Epoch47_HR0.0032_NDCG0.0072.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_goodbooks_Epoch47_HR0.0198_NDCG0.0363.model'),
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbeauty_Epoch49_HR0.0045_NDCG0.0084.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_amazonbeauty_Epoch25_HR0.0099_NDCG0.0187.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
 # Load Data
 # ml1m_dir = 'data/movielens_corpus.csv'
-# ml1m_dir = 'data/amazonbeauty_corpus.csv'
-ml1m_dir = 'data/goodbooks_corpus.csv'
+ml1m_dir = 'data/amazonbeauty_corpus.csv'
+# ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_dir = 'data/netflix_corpus.csv'
 # ml1m_dir = 'data/moviesdat_corpus.csv'
@@ -82,7 +82,8 @@ item_id = ml1m_rating[['mid']].drop_duplicates()
 item_id['itemId'] = np.arange(len(item_id))
 ml1m_rating = pd.merge(ml1m_rating, item_id, on=['mid'], how='left')
 # ml1m_rating.to_csv('new_index_movielens.csv', encoding='utf-8', index=False)  ###########################
-ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
+# ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
+ml1m_rating.to_csv(r'./csvs/amazonbeauty_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
 ml1m_rating = ml1m_rating[['userId', 'itemId', 'rating', 'timestamp']]
 print('Range of userId is [{}, {}]'.format(ml1m_rating.userId.min(), ml1m_rating.userId.max()))
 print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating.itemId.max()))

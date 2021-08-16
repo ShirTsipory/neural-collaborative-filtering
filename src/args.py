@@ -117,7 +117,7 @@ neumf_config = {'alias': 'neumf_amazonbeauty',
                 'device_id': 0,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbeauty_Epoch49_HR0.0045_NDCG0.0084.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_factor8neg4_bz256_166432168_pretrain_reg_0.0000001_Epoch49_HR0.4790_NDCG0.6568.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_amazonbeauty_Epoch25_HR0.0099_NDCG0.0187.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################
