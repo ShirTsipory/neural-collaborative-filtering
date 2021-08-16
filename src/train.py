@@ -72,7 +72,6 @@ ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_dir = 'data/netflix_corpus.csv'
 # ml1m_dir = 'data/moviesdat_corpus.csv'
-# ml1m_rating = pd.read_csv(ml1m_dir, sep='::', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
 user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
