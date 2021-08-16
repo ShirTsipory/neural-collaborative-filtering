@@ -19,7 +19,6 @@ gmf_config = {'alias': 'gmf_movielens',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
-              'device_id_2': 0,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_movielens',
@@ -35,7 +34,6 @@ mlp_config = {'alias': 'mlp_movielens',
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
               'device_id': 0,
-              'device_id_2': 0,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
@@ -54,7 +52,6 @@ neumf_config = {'alias': 'neumf_movielens',
                 'l2_regularization': 0.01,
                 'use_cuda': True,
                 'device_id': 0,
-                'device_id_2': 0,
                 'pretrain': True,
                 'pretrain_mf': 'movielens_checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
                 'pretrain_mlp': 'movielens_checkpoints/{}'.format('movielens_mlp_movielens_Epoch49_HR0.0354_NDCG0.0652.model'),
