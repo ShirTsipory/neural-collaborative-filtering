@@ -7,7 +7,7 @@ from neumf import NeuMFEngine
 from data import SampleGenerator
 # os.environ['CUDA_VISIBLE_DEVICES'] = '0, 3'
 
-gmf_config = {'alias': 'gmf_yahoo',
+gmf_config = {'alias': 'gmf_amazonbooks',
               'num_epoch': 50,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -19,46 +19,46 @@ gmf_config = {'alias': 'gmf_yahoo',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 19151,
-              'num_items': 17711,
+              'num_users': 31202,
+              'num_items': 2111,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
-              'device_id': 2,
+              'device_id': 3,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-mlp_config = {'alias': 'mlp_yahoo',
+mlp_config = {'alias': 'mlp_amazonbooks',
               'num_epoch': 50,
               'batch_size': 256,  # 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 19151,
-              'num_items': 17711,
+              'num_users': 31202,
+              'num_items': 2111,
               'latent_dim': 8,
               'num_negative': 4,
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
-              'device_id': 2,
+              'device_id': 3,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format(''),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_yahoo',
+neumf_config = {'alias': 'neumf_amazonbooks',
                 'num_epoch': 50,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
-                'num_users': 19151,
-                'num_items': 17711,
+                'num_users': 31202,
+                'num_items': 2111,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 2,
+                'device_id': 3,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format(''),
                 'pretrain_mlp': 'checkpoints/{}'.format(''),
@@ -69,9 +69,10 @@ neumf_config = {'alias': 'neumf_yahoo',
 # ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/netflix_corpus.csv'
 # ml1m_dir = 'data/moviesdat_corpus.csv'
-ml1m_dir = 'data/yahoo_all_corpus.csv'
+# ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
 # ml1m_dir = 'data/goodbooks_corpus.csv'
+ml1m_dir = 'data/amazonbooks_corpus.csv'
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
 user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
