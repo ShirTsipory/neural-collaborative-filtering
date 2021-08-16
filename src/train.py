@@ -7,7 +7,7 @@ from neumf import NeuMFEngine
 from data import SampleGenerator
 # os.environ['CUDA_VISIBLE_DEVICES'] = '0, 3'
 
-gmf_config = {'alias': 'gmf_movielens',
+gmf_config = {'alias': 'gmf_netflix',
               'num_epoch': 50,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -19,8 +19,8 @@ gmf_config = {'alias': 'gmf_movielens',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 5765,
-              'num_items': 1865,
+              'num_users': 10677,
+              'num_items': 2121,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
@@ -28,13 +28,13 @@ gmf_config = {'alias': 'gmf_movielens',
               'device_id': 0,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-mlp_config = {'alias': 'mlp_movielens',
+mlp_config = {'alias': 'mlp_netflix',
               'num_epoch': 50,
-              'batch_size': 256,
+              'batch_size': 256,  # 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 5765,
-              'num_items': 1865,
+              'num_users': 10677,
+              'num_items': 2121,
               'latent_dim': 8,
               'num_negative': 4,
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
@@ -42,35 +42,35 @@ mlp_config = {'alias': 'mlp_movielens',
               'use_cuda': True,
               'device_id': 0,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_netflix_Epoch49_HR0.0645_NDCG0.0929.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_movielens',
+neumf_config = {'alias': 'neumf_netflix',
                 'num_epoch': 50,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
-                'num_users': 5765,
-                'num_items': 1865,
+                'num_users': 10677,
+                'num_items': 2121,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 1,
+                'device_id': 0,
                 'pretrain': True,
-                'pretrain_mf': 'movielens_checkpoints/{}'.format('movielens_gmf_movielens_Epoch49_HR0.0272_NDCG0.0501.model'),
-                'pretrain_mlp': 'movielens_checkpoints/{}'.format('movielens_mlp_movielens_Epoch49_HR0.0354_NDCG0.0652.model'),
-                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
+                'pretrain_mf': 'netflix_checkpoints/{}'.format('gmf_netflix_Epoch49_HR0.0645_NDCG0.0929.model'),
+                'pretrain_mlp': 'netflix_checkpoints/{}'.format('mlp_netflix_Epoch37_HR0.0968_NDCG0.1293.model'),
+                'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}_try2.model'
                 }
 
 # Load Data
-ml1m_dir = 'data/movielens_corpus.csv'
+# ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
 # ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/yahoo_all_corpus.csv'
-# ml1m_dir = 'data/netflix_corpus.csv'
+ml1m_dir = 'data/netflix_corpus.csv'
 # ml1m_dir = 'data/moviesdat_corpus.csv'
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
@@ -80,7 +80,8 @@ ml1m_rating = pd.merge(ml1m_rating, user_id, on=['uid'], how='left')
 item_id = ml1m_rating[['mid']].drop_duplicates()
 item_id['itemId'] = np.arange(len(item_id))
 ml1m_rating = pd.merge(ml1m_rating, item_id, on=['mid'], how='left')
-ml1m_rating.to_csv(r'./csvs/movielens_csv/new_index_movielens.csv', encoding='utf-8', index=False)  ###########################
+# ml1m_rating.to_csv(r'./csvs/movielens_csv/new_index_movielens.csv', encoding='utf-8', index=False)  #################
+ml1m_rating.to_csv(r'./csvs/netflix_csv/new_index_netflix.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/amazonbeauty_csv/new_index_amazonbeauty.csv', encoding='utf-8', index=False)
 ml1m_rating = ml1m_rating[['userId', 'itemId', 'rating', 'timestamp']]

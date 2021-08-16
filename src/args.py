@@ -199,7 +199,6 @@ gmf_config = {'alias': 'gmf_netflix',
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
               'device_id': 0,
-              'device_id_2': 0,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_netflix',
@@ -215,7 +214,6 @@ mlp_config = {'alias': 'mlp_netflix',
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
               'device_id': 0,
-              'device_id_2': 0,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_netflix_Epoch49_HR0.0645_NDCG0.0929.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
@@ -234,7 +232,6 @@ neumf_config = {'alias': 'neumf_netflix',
                 'l2_regularization': 0.01,
                 'use_cuda': True,
                 'device_id': 0,
-                'device_id_2': 0,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_netflix_Epoch49_HR0.0645_NDCG0.0929.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_netflix_Epoch37_HR0.0968_NDCG0.1293.model'),
