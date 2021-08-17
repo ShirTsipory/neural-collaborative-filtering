@@ -378,7 +378,7 @@ gmf_config = {'alias': 'gmf_amazonbooks',
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
-              'device_id': 0,
+              'device_id': 1,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_amazonbooks',
@@ -393,9 +393,9 @@ mlp_config = {'alias': 'mlp_amazonbooks',
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
-              'device_id': 0,
+              'device_id': 1,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format(''),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_amazonbooks',
@@ -411,10 +411,10 @@ neumf_config = {'alias': 'neumf_amazonbooks',
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 0,
+                'device_id': 1,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format(''),
-                'pretrain_mlp': 'checkpoints/{}'.format(''),
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_amazonbooks_Epoch47_HR0.0455_NDCG0.0852.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################

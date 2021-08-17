@@ -25,7 +25,7 @@ gmf_config = {'alias': 'gmf_amazonbooks',
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
-              'device_id': 3,
+              'device_id': 1,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_amazonbooks',
@@ -40,7 +40,7 @@ mlp_config = {'alias': 'mlp_amazonbooks',
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
-              'device_id': 0,
+              'device_id': 1,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
@@ -58,10 +58,10 @@ neumf_config = {'alias': 'neumf_amazonbooks',
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 3,
+                'device_id': 1,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format(''),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_amazonbooks_Epoch47_HR0.0455_NDCG0.0852.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
@@ -86,6 +86,7 @@ ml1m_rating = pd.merge(ml1m_rating, item_id, on=['mid'], how='left')
 # ml1m_rating.to_csv(r'./csvs/moviesdat_csv/new_index_moviesdat.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/amazonbeauty_csv/new_index_amazonbeauty.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
+ml1m_rating.to_csv(r'./csvs/amazonbooks_csv/new_index_amazonbooks.csv', encoding='utf-8', index=False)
 ml1m_rating = ml1m_rating[['userId', 'itemId', 'rating', 'timestamp']]
 print('Range of userId is [{}, {}]'.format(ml1m_rating.userId.min(), ml1m_rating.userId.max()))
 print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating.itemId.max()))
@@ -95,10 +96,10 @@ evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
 # config = gmf_config
 # engine = GMFEngine(config)
-config = mlp_config
-engine = MLPEngine(config)
-# config = neumf_config
-# engine = NeuMFEngine(config)
+# config = mlp_config
+# engine = MLPEngine(config)
+config = neumf_config
+engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)

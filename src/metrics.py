@@ -47,6 +47,7 @@ class MetronAtK(object):
         # full.to_csv(r'./csvs/moviesdat_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
         # full.to_csv(r'./csvs/amazonbeauty_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
         # full.to_csv(r'./csvs/goodbooks_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
+        full.to_csv(r'./csvs/amazonbooks_csv/scores_epoch_' + str(epoch_id) + '.csv', encoding='utf-8', index=False)
 
     def cal_hit_ratio(self):
         # Hit Ratio @ top_K
