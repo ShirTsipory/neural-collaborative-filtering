@@ -86,7 +86,7 @@ ml1m_rating = pd.merge(ml1m_rating, item_id, on=['mid'], how='left')
 # ml1m_rating.to_csv(r'./csvs/moviesdat_csv/new_index_moviesdat.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/amazonbeauty_csv/new_index_amazonbeauty.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
-ml1m_rating.to_csv(r'./csvs/amazonbooks_csv/new_index_amazonbooks.csv', encoding='utf-8', index=False)
+# ml1m_rating.to_csv(r'./csvs/amazonbooks_csv/new_index_amazonbooks.csv', encoding='utf-8', index=False)
 ml1m_rating = ml1m_rating[['userId', 'itemId', 'rating', 'timestamp']]
 print('Range of userId is [{}, {}]'.format(ml1m_rating.userId.min(), ml1m_rating.userId.max()))
 print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating.itemId.max()))
