@@ -7,7 +7,7 @@ from neumf import NeuMFEngine
 from data import SampleGenerator
 # os.environ['CUDA_VISIBLE_DEVICES'] = '0, 3'
 
-gmf_config = {'alias': 'gmf_amazonbooks',
+gmf_config = {'alias': 'gmf_yahoo',
               'num_epoch': 50,
               'batch_size': 1024,
               # 'optimizer': 'sgd',
@@ -19,49 +19,49 @@ gmf_config = {'alias': 'gmf_amazonbooks',
               # 'rmsprop_momentum': 0,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 31202,
-              'num_items': 2111,
+              'num_users': 19151,
+              'num_items': 17711,
               'latent_dim': 8,
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
-              'device_id': 1,
+              'device_id': 3,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-mlp_config = {'alias': 'mlp_amazonbooks',
+mlp_config = {'alias': 'mlp_yahoo',
               'num_epoch': 50,
               'batch_size': 256,  # 1024,
               'optimizer': 'adam',
               'adam_lr': 1e-3,
-              'num_users': 31202,
-              'num_items': 2111,
+              'num_users': 19151,
+              'num_items': 17711,
               'latent_dim': 8,
               'num_negative': 4,
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
-              'device_id': 1,
+              'device_id': 3,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
-neumf_config = {'alias': 'neumf_amazonbooks',
+neumf_config = {'alias': 'neumf_yahoo',
                 'num_epoch': 50,
                 'batch_size': 1024,
                 'optimizer': 'adam',
                 'adam_lr': 1e-3,
-                'num_users': 31202,
-                'num_items': 2111,
+                'num_users': 19151,
+                'num_items': 17711,
                 'latent_dim_mf': 8,
                 'latent_dim_mlp': 8,
                 'num_negative': 4,
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 1,
+                'device_id': 3,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format('mlp_amazonbooks_Epoch47_HR0.0455_NDCG0.0852.model'),
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
+                'pretrain_mlp': 'checkpoints/{}'.format(''),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
@@ -69,10 +69,10 @@ neumf_config = {'alias': 'neumf_amazonbooks',
 # ml1m_dir = 'data/movielens_corpus.csv'
 # ml1m_dir = 'data/netflix_corpus.csv'
 # ml1m_dir = 'data/moviesdat_corpus.csv'
-# ml1m_dir = 'data/yahoo_all_corpus.csv'
+ml1m_dir = 'data/yahoo_all_corpus.csv'
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
 # ml1m_dir = 'data/goodbooks_corpus.csv'
-ml1m_dir = 'data/amazonbooks_corpus.csv'
+# ml1m_dir = 'data/amazonbooks_corpus.csv'
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
 user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
@@ -96,10 +96,10 @@ evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
 # config = gmf_config
 # engine = GMFEngine(config)
-# config = mlp_config
-# engine = MLPEngine(config)
-config = neumf_config
-engine = NeuMFEngine(config)
+config = mlp_config
+engine = MLPEngine(config)
+# config = neumf_config
+# engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)

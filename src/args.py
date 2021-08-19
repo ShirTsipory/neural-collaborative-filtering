@@ -335,7 +335,7 @@ mlp_config = {'alias': 'mlp_yahoo',
               'use_cuda': True,
               'device_id': 0,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format(''),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_yahoo',
@@ -353,7 +353,7 @@ neumf_config = {'alias': 'neumf_yahoo',
                 'use_cuda': True,
                 'device_id': 0,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format(''),
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format(''),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
