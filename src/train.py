@@ -61,7 +61,7 @@ neumf_config = {'alias': 'neumf_yahoo',
                 'device_id': 3,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format(''),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_yahoo_Epoch49_HR0.0406_NDCG0.0752.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 
@@ -84,6 +84,7 @@ ml1m_rating = pd.merge(ml1m_rating, item_id, on=['mid'], how='left')
 # ml1m_rating.to_csv(r'./csvs/movielens_csv/new_index_movielens.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/netflix_csv/new_index_netflix.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/moviesdat_csv/new_index_moviesdat.csv', encoding='utf-8', index=False)
+ml1m_rating.to_csv(r'./csvs/yahoo_csv/new_index_yahoo.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/amazonbeauty_csv/new_index_amazonbeauty.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/goodbooks_csv/new_index_goodbooks.csv', encoding='utf-8', index=False)
 # ml1m_rating.to_csv(r'./csvs/amazonbooks_csv/new_index_amazonbooks.csv', encoding='utf-8', index=False)
@@ -96,10 +97,10 @@ evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
 # config = gmf_config
 # engine = GMFEngine(config)
-config = mlp_config
-engine = MLPEngine(config)
-# config = neumf_config
-# engine = NeuMFEngine(config)
+# config = mlp_config
+# engine = MLPEngine(config)
+config = neumf_config
+engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
     print('Epoch {} starts !'.format(epoch))
     print('-' * 80)

@@ -61,7 +61,7 @@ class Engine(object):
                 negative_items = negative_items.cuda()
             test_scores = self.model(test_users, test_items)
             #negative_scores = self.model(negative_users, negative_items)
-            batches = 350
+            batches = 1000
             batch_size = int(len(negative_users) / batches)
             neg_users = torch.split(negative_users, batch_size)
             neg_items = torch.split(negative_items, batch_size)
