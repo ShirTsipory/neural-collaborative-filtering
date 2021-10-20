@@ -318,7 +318,7 @@ gmf_config = {'alias': 'gmf_yahoo',
               'num_negative': 4,
               'l2_regularization': 0, # 0.01
               'use_cuda': True,
-              'device_id': 0,
+              'device_id': 3,
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 mlp_config = {'alias': 'mlp_yahoo',
@@ -333,7 +333,7 @@ mlp_config = {'alias': 'mlp_yahoo',
               'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
               'l2_regularization': 0.0000001,  # MLP model is sensitive to hyper params
               'use_cuda': True,
-              'device_id': 0,
+              'device_id': 3,
               'pretrain': True,
               'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
@@ -351,10 +351,10 @@ neumf_config = {'alias': 'neumf_yahoo',
                 'layers': [16,64,32,16,8],  # layers[0] is the concat of latent user vector & latent item vector
                 'l2_regularization': 0.01,
                 'use_cuda': True,
-                'device_id': 0,
+                'device_id': 3,
                 'pretrain': True,
                 'pretrain_mf': 'checkpoints/{}'.format('gmf_yahoo_Epoch38_HR0.0429_NDCG0.0777.model'),
-                'pretrain_mlp': 'checkpoints/{}'.format(''),
+                'pretrain_mlp': 'checkpoints/{}'.format('mlp_yahoo_Epoch49_HR0.0406_NDCG0.0752.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
 ##################################################################################################################
