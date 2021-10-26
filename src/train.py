@@ -73,7 +73,7 @@ neumf_config = {'alias': 'neumf_amazonbooks_new',
 # ml1m_dir = 'data/amazonbeauty_corpus.csv'
 # ml1m_dir = 'data/goodbooks_corpus.csv'
 # ml1m_dir = 'data/amazonbooks_corpus.csv'
-ml1m_dir = 'data/ratings_amazon_books.csv'
+ml1m_dir = 'data/ratings_amazon_books_new.csv'
 ml1m_rating = pd.read_csv(ml1m_dir, sep=',', header=None, names=['uid', 'mid', 'rating', 'timestamp'],  engine='python')
 # Reindex
 user_id = ml1m_rating[['uid']].drop_duplicates().reindex()
