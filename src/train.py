@@ -42,7 +42,7 @@ mlp_config = {'alias': 'mlp_amazonbooks_new',
               'use_cuda': True,
               'device_id': 2,
               'pretrain': True,
-              'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
+              'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_new_Epoch49_HR0.0241_NDCG0.0482.model'),
               'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'}
 
 neumf_config = {'alias': 'neumf_amazonbooks_new',
@@ -60,7 +60,7 @@ neumf_config = {'alias': 'neumf_amazonbooks_new',
                 'use_cuda': True,
                 'device_id': 2,
                 'pretrain': True,
-                'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_Epoch49_HR0.0254_NDCG0.0471.model'),
+                'pretrain_mf': 'checkpoints/{}'.format('gmf_amazonbooks_new_Epoch49_HR0.0241_NDCG0.0482.model'),
                 'pretrain_mlp': 'checkpoints/{}'.format('mlp_amazonbooks_Epoch47_HR0.0455_NDCG0.0852.model'),
                 'model_dir':'checkpoints/{}_Epoch{}_HR{:.4f}_NDCG{:.4f}.model'
                 }
@@ -97,10 +97,10 @@ print('Range of itemId is [{}, {}]'.format(ml1m_rating.itemId.min(), ml1m_rating
 sample_generator = SampleGenerator(ratings=ml1m_rating)
 evaluate_data = sample_generator.evaluate_data
 # Specify the exact model
-config = gmf_config
-engine = GMFEngine(config)
-# config = mlp_config
-# engine = MLPEngine(config)
+# config = gmf_config
+# engine = GMFEngine(config)
+config = mlp_config
+engine = MLPEngine(config)
 # config = neumf_config
 # engine = NeuMFEngine(config)
 for epoch in range(config['num_epoch']):
