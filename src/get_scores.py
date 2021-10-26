@@ -28,8 +28,6 @@ def ndcg_k(preds_df, k):
 #                        dtype={'user': int, 'item': int, 'rating': float, 'timestamp': float},
 #                        engine='python'
 
-# taking out only the test items but I need to reindex them back.
-
 #test_items = test['test_item'].values
 #print(test_items)
 #print(len(test_items))
@@ -45,19 +43,18 @@ def ndcg_k(preds_df, k):
 #print(result)
 #for index, row in trained.iterrows():
 #    if row['item'] in items_set:
-
 # full = pd.merge(index_data, test, on=['user', 'item'], how='left')
 
 ####################################################################################################################
-trained_data = pd.read_csv('csvs/movilens_csv/scores_epoch_0.csv', sep=',')
+# trained_data = pd.read_csv('csvs/movilens_csv/scores_epoch_0.csv', sep=',')
 # trained_data = pd.read_csv('csvs/netflix_csv/scores_epoch_0.csv', sep=',')
 # trained_data = pd.read_csv('csvs/yahoo_csv/scores_epoch_16.csv', sep=',')
-
 # trained_data = pd.read_csv('csvs/amazonbeauty_csv/scores_epoch_3.csv', sep=',')
 # trained_data = pd.read_csv('csvs/amazonbooks_csv/scores_epoch_0.csv', sep=',')
 # trained_data = pd.read_csv('csvs/goodbooks_csv/scores_epoch_0.csv', sep=',')
 # trained_data = pd.read_csv('csvs/moviesdat_csv/scores_epoch_20.csv', sep=',')
-
+trained_data = pd.read_csv('csvs/amazonbooks_csv/test_scores_epoch_0.csv', sep=',')
+# taking out only the test items but I need to reindex them back.
 items_list = []
 for idx, line in trained_data.iterrows():
     items_list.append(line['item'])
@@ -67,7 +64,7 @@ print("num_all_items")
 print(num_all_items)
 print()
 test = trained_data[trained_data['test_item'] == trained_data['item']]
-# print(test)
+# take test check data and create it that the user and item ids will be as in index data.
 test_check = test[['user', 'item', 'rank']]
 
 print("hr@5")
@@ -95,16 +92,14 @@ print("mpr")
 print(mpr(test_check, num_all_items))
 print()
 
-# take test check data and create it that the user and item ids will be as in index data.
-
-index_data = pd.read_csv('csvs/movilens_csv/new_index_movielens.csv', sep=',')
+# index_data = pd.read_csv('csvs/movilens_csv/new_index_movielens.csv', sep=',')
 # index_data = pd.read_csv('csvs/netflix_csv/new_index_netflix.csv', sep=',')
 # index_data = pd.read_csv('csvs/yahoo_csv/new_index_yahoo.csv', sep=',')
-
 # index_data = pd.read_csv('csvs/amazonbeauty_csv/new_index_amazonbeauty.csv', sep=',')
 # index_data = pd.read_csv('csvs/amazonbooks_csv/new_index_amazonbooks.csv', sep=',')
 # index_data = pd.read_csv('csvs/goodbooks_csv/new_index_goodbooks.csv', sep=',')
 # index_data = pd.read_csv('csvs/moviesdat_csv/new_index_moviesdat.csv', sep=',')
+index_data = pd.read_csv('csvs/amazonbooks_csv/new_index_amazonbooks_new.csv', sep=',')
 
 # print(index_data)
 user_dict = {}
@@ -119,16 +114,14 @@ for idx, line in index_data.iterrows():
 #    line['user'] = user_dict[line['user']]
 #    line['item'] = user_dict[line['item']]
 
-
 # with open('ncf_netflix_scores.csv', 'w', newline='') as w_file:
 # with open('ncf_yahoo_scores.csv', 'w', newline='') as w_file:
-
-
 # with open('ncf_amazonbeauty_scores.csv', 'w', newline='') as w_file:
 # with open('ncf_amazonbooks_scores.csv', 'w', newline='') as w_file:
 # with open('ncf_goodbooks_scores.csv', 'w', newline='') as w_file:
 # with open('ncf_moviesdat_scores.csv', 'w', newline='') as w_file:
-with open('ncf_movielens_scores.csv', 'w', newline='') as w_file:
+# with open('ncf_movielens_scores.csv', 'w', newline='') as w_file:
+with open('ncf_amazonbooks_new_scores.csv', 'w', newline='') as w_file:
     writer = csv.writer(w_file, delimiter=',', quotechar='"', escapechar='\n', quoting=csv.QUOTE_NONE)
     writer.writerow(['user', 'item', 'score', 'rank'])
     for idx, line in test.iterrows():
